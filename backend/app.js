@@ -3,12 +3,13 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const path = require('path');
 
-// const stuffRoutes = require('./routes/stuff');
+const bookRoutes = require('./routes/book');
 const userRoutes = require('./routes/user');
 
 mongoose.connect(
-  "mongodb+srv://Willzebud:Azerty@cluster0.n28ihsm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", 
-  { })
+  "mongodb+srv://willzebud:GreEFScCWXPbfKnD@cluster0.6oicjdr.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0", 
+  // process.env.MONGODB_URI
+  { useNewUrlParser: true, useUnifiedTopology: true  })
     .then(() => console.log('Connection à MongoDB réussie'))
     .catch(() => console.log('Connection à MongoDB échouée'));
 
@@ -25,7 +26,7 @@ app.use(bodyParser.json());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-//app.use('/api/stuff', stuffRoutes);
+app.use('/api/books', bookRoutes);
 app.use('/api/auth', userRoutes);
 
 module.exports = app;

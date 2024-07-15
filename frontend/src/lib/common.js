@@ -29,7 +29,7 @@ export async function getAuthenticatedUser() {
     }
     return { authenticated: true, user: { userId, token } };
   } catch (err) {
-    console.error('getAuthenticatedUser, Something Went Wrong', err);
+    console.error('getAuthenticatedUser, Somebook Went Wrong', err);
     return defaultReturnObject;
   }
 }

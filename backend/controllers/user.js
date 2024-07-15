@@ -5,19 +5,11 @@ const User = require('../models/User');
 
 exports.signup = (req, res, next) => {
     
+    console.log(req.body);
     const emailRegex = /\S+@\S+\.\S+/;
     if (!emailRegex.test(req.body.email)) {
         return res.status(400).json({ error: 'Email invalide' });
     }
-
-    User.init().then(() => {
-        finalUser.save((err, data) => {
-          if (err) {
-            return res.status(400).json(err)
-          }
-          return res.json({ user: finalUser.toAuthJSON() })
-        })
-      })
 
     bcrypt.hash(req.body.password, 10)
     .then(hash => {
