@@ -5,11 +5,20 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 exports.signup = (req, res, next) => {
-    
     console.log(req.body);
-    const emailRegex = /\S+@\S+\.\S+/;
-    if (!emailRegex.test(req.body.email)) {
+
+    if (!validator.isEmail(req.body.email)) {
         return res.status(400).json({ error: 'Email invalide' });
+    }
+
+    if (!validator.isStrongPassword(req.body.password, { 
+        minLength: 8, 
+        minLowercase: 1, 
+        minUppercase: 1, 
+        minNumbers: 1, 
+        minSymbols: 0 
+    })) {
+        return res.status(400).json({ error: 'Mot de passe non robuste. Il doit contenir au moins 8 caractères, incluant une lettre majuscule, une lettre minuscule et un chiffre.' });
     }
 
     bcrypt.hash(req.body.password, 10)
@@ -40,7 +49,7 @@ exports.login = (req, res, next) => {
                 userId: user._id,
                 token: jwt.sign(
                     { userId: user._id },
-                    'RANDOM_TOKEN_SECRET',
+                    process.env.JWT_SECRET,
                     { expiresIn: '24h' }
                 )
             });
@@ -49,3 +58,4 @@ exports.login = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ error }));
 };
+
